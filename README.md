@@ -1,6 +1,8 @@
 ## Up and running with Gitcoin Passport
 
-This is a reference architecture to show you how to build with and use the Gitcoin Passport APIs to score users for your app.
+This is a reference architecture to show you how to build with and use the [Gitcoin Passport](https://passport.gitcoin.co/#/) to score users for your app.
+
+Gitcoin Passport is a tool that enables developers to provide sybil resistance for their applications.
 
 ### Getting started
 
