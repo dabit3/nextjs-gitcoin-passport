@@ -15,7 +15,10 @@ declare global {
 }
 
 // submitting passport
-const SUBMIT_PASSPORT = 'https://api.scorer.gitcoin.co/registry/submit-passport'
+const SUBMIT_PASSPORT_URI = 'https://api.scorer.gitcoin.co/registry/submit-passport'
+
+// getting the signing message
+const SIGNING_MESSAGE_URI = 'https://api.scorer.gitcoin.co/registry/signing-message'
 
 export default function Passport() {
   const [address, setAddress] = useState<string>('')
@@ -63,7 +66,7 @@ export default function Passport() {
       const signer = provider.getSigner()
       const signature = await signer.signMessage(response.message)
       
-      const signedResponse = await fetch(SUBMIT_PASSPORT, {
+      const signedResponse = await fetch(SUBMIT_PASSPORT_URI, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -84,9 +87,9 @@ export default function Passport() {
   async function checkPassport(currentAddress = address) {
     setScore('')
     // passportUri
-    const PASSPORTURI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}/${currentAddress}`
+    const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}/${currentAddress}`
     try {
-      const response = await fetch(PASSPORTURI, {
+      const response = await fetch(GET_PASSPORT_SCORE_URI, {
         headers
       })
       const passportData = await response.json()
@@ -104,10 +107,8 @@ export default function Passport() {
   }
 
   async function getSigningMessage() {
-    // signing message
-    const SIGNINGMESSAGE = 'https://api.scorer.gitcoin.co/registry/signing-message'
     try {
-      const response = await fetch(SIGNINGMESSAGE, {
+      const response = await fetch(SIGNING_MESSAGE_URI, {
         headers
       })
       const json = await response.json()
@@ -120,9 +121,9 @@ export default function Passport() {
 
   async function getScorer() {
     //  api scorer
-    const APISCORER = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}`
+    const COMMUNITY_SCORER_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}`
     try {
-      const response = await fetch(APISCORER, {
+      const response = await fetch(COMMUNITY_SCORER_URI, {
         headers
       })
       const data = await response.json()
