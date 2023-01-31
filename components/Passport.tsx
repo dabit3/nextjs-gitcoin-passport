@@ -20,6 +20,8 @@ const SUBMIT_PASSPORT_URI = 'https://api.scorer.gitcoin.co/registry/submit-passp
 // getting the signing message
 const SIGNING_MESSAGE_URI = 'https://api.scorer.gitcoin.co/registry/signing-message'
 
+const thresholdNumber = 20
+
 export default function Passport() {
   const [address, setAddress] = useState<string>('')
   const [connected, setConnected] = useState<boolean>(false)
@@ -149,6 +151,18 @@ export default function Passport() {
         score && (
           <div>
             <h1>Your passport score is {score} 🎉</h1>
+            <div style={styles.hiddenMessageContainer}>
+              {
+                Number(score) >= thresholdNumber && (
+                  <h2>Congratulations, you can view this secret message!</h2>
+                )
+              }
+              {
+                Number(score) < thresholdNumber && (
+                  <h2>Sorry, your score is not high enough to view the secret message.</h2>
+                )
+              }
+            </div>
           </div>
         )
       }
@@ -191,6 +205,9 @@ const styles = {
     marginRight: '10px',
     borderBottom: '2px solid rgba(0, 0, 0, .2)',
     borderRight: '2px solid rgba(0, 0, 0, .2)'
+  },
+  hiddenMessageContainer: {
+    marginTop: 15
   }
 }
 
