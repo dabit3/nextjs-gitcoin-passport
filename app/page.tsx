@@ -61,7 +61,6 @@ export default function Passport() {
   async function checkPassport(currentAddress = address) {
     setScore('')
     setNoScoreMessage('')
-    // passportUri
     const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}/${currentAddress}`
     try {
       const response = await fetch(GET_PASSPORT_SCORE_URI, {
