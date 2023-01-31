@@ -31,7 +31,6 @@ export default function Passport() {
 
   useEffect(() => {
     checkConnection()
-
     async function checkConnection() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -70,7 +69,6 @@ export default function Passport() {
       console.log('passportData: ', passportData)
       if (passportData.score) {
         const roundedScore = Math.round(passportData.score * 100) / 100
-        console.log('roundedScore: ', roundedScore)
         setScore(roundedScore.toString())
       } else {
         console.log('No score available, please add stamps to your passport and then resubmit.')
@@ -87,7 +85,6 @@ export default function Passport() {
         headers
       })
       const json = await response.json()
-      console.log({ json })
       return json
     } catch (err) {
       console.log('error: ', err)
