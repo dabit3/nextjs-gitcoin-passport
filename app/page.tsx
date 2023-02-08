@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 
-const APIKEY = process.env.NEXT_PUBLIC_GC_API_KEY
-const COMMUNITYID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
+const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY
+const COMMUNITY_ID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
 
 const headers = {
   'Content-Type': 'application/json',
-  'Authorization': `Bearer ${APIKEY}`
+  'Authorization': `Bearer ${API_KEY}`
 }
 
 declare global {
@@ -21,7 +21,7 @@ const SUBMIT_PASSPORT_URI = 'https://api.scorer.gitcoin.co/registry/submit-passp
 // getting the signing message
 const SIGNING_MESSAGE_URI = 'https://api.scorer.gitcoin.co/registry/signing-message'
 // score needed to see hidden message
-const thresholdNumber = 20
+const thresholdNumber = 32
 
 export default function Passport() {
   const [address, setAddress] = useState<string>('')
@@ -60,7 +60,7 @@ export default function Passport() {
   async function checkPassport(currentAddress = address) {
     setScore('')
     setNoScoreMessage('')
-    const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}/${currentAddress}`
+    const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITY_ID}/${currentAddress}`
     try {
       const response = await fetch(GET_PASSPORT_SCORE_URI, {
         headers
@@ -104,7 +104,7 @@ export default function Passport() {
         headers,
         body: JSON.stringify({
           address,
-          community: COMMUNITYID,
+          community: COMMUNITY_ID,
           signature,
           nonce
         })
@@ -205,7 +205,7 @@ const styles = {
 
 // async function getScorer() {
 //   //  api scorer
-//   const COMMUNITY_SCORER_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITYID}`
+//   const COMMUNITY_SCORER_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITY_ID}`
 //   try {
 //     const response = await fetch(COMMUNITY_SCORER_URI, {
 //       headers
@@ -214,50 +214,5 @@ const styles = {
 //     console.log('data: ', data)
 //   } catch (err) {
 //     console.log('error: ', err)
-//   }
-// }
-
-// async function verify() {
-//   const verifier = await loadVerifier()
-//   console.log('verifier: ', verifier)
-//   const data = await verifier.verifyPassport('0xB2Ebc9b3a788aFB1E942eD65B59E9E49A1eE500D')
-
-//   if (!data) {
-//     console.log('no data...')
-//     return
-//   }
-//   console.log('data from passport: ', data)
-// }
-
-// const loadVerifier = useCallback(async () => {
-//   const PassportVerifier = (await import('@gitcoinco/passport-sdk-verifier')).PassportVerifier;
-//   // Create PassportVerifier with given URL and Network
-//   return new PassportVerifier(PROD_GITCOIN_CERAMIC_NODE_URL, MAINNET_NETWORK_ID);
-// }, [])
-
-
-// const loadScorer = useCallback(async (stamps: Criteria[]) => {
-//   const PassportScorer = (await import('@gitcoinco/passport-sdk-scorer')).PassportScorer;
-//   // Create PassportScorer with given stamp criteria, URL, and Network
-//   return new PassportScorer(stamps, PROD_GITCOIN_CERAMIC_NODE_URL, MAINNET_NETWORK_ID);
-// }, []);
-
-
-// async function readPassport() {
-//   try {
-//     const reader = new PassportReader(PROD_GITCOIN_CERAMIC_NODE_URL, MAINNET_NETWORK_ID)
-//     const data = await reader.getPassport('0xB2Ebc9b3a788aFB1E942eD65B59E9E49A1eE500D');
-//   // If data is false, the passport was missing
-//   if (!data) {
-//     console.log('no data for addres...')
-//     return
-//   }
-//   console.log('Passport Data', data)
-//   const scorer = await loadScorer(acceptedStamps)
-//   const score = await scorer.getScore('0xB2Ebc9b3a788aFB1E942eD65B59E9E49A1eE500D')
-
-//   console.log('score: ', score)
-//   } catch (err) {
-//     console.log('error reading passport...', err)
 //   }
 // }
