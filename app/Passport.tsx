@@ -8,7 +8,7 @@ const COMMUNITY_ID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
 
 const headers = {
   'Content-Type': 'application/json',
-  'Authorization': `Bearer ${API_KEY}`
+  'X-API-Key': API_KEY
 }
 
 declare global {
