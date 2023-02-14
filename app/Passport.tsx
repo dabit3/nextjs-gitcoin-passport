@@ -6,16 +6,16 @@ import { styles } from './styles'
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY
 const COMMUNITY_ID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
 
-const headers = {
-  'Content-Type': 'application/json',
-  'X-API-Key': API_KEY
-}
-
 declare global {
-  interface Window{
+  interface Window {
     ethereum?: any
   }
 }
+
+const headers = API_KEY ? ({
+  'Content-Type': 'application/json',
+  'X-API-Key': API_KEY
+}) : undefined
 
 // submitting passport
 const SUBMIT_PASSPORT_URI = 'https://api.scorer.gitcoin.co/registry/submit-passport'
