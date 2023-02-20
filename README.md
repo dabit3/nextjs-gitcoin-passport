@@ -10,7 +10,7 @@ way of retrieving a wallet's Passport score.
 
 ### Getting started
 
-To get started, you must first create an environment variable and community
+To get started, you must first create an API Key and community
 using the [Gitcoin Scorer API](https://scorer.gitcoin.co/).
 
 You can look through this codebase to see what a simple integration with Gitcoin
