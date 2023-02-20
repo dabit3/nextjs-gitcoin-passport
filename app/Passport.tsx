@@ -115,7 +115,7 @@ export default function Passport(props) {
                   }
                   {
                     Number(score) < thresholdNumber && (
-                      <h2>Sorry, your score is not high enough to view the secret message.</h2>
+                      <h2>Sorry, your score is not high enough to view the secret message. Please increase your score to {thresholdNumber}.</h2>
                     )
                   }
                 </div>
