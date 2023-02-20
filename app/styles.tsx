@@ -27,7 +27,11 @@ export const styles = {
     cursor: 'pointer',
     marginRight: '10px',
     borderBottom: '2px solid rgba(0, 0, 0, .2)',
-    borderRight: '2px solid rgba(0, 0, 0, .2)'
+    borderRight: '2px solid rgba(0, 0, 0, .2)',
+    backgroundColor: 'black',
+    borderRadius: '40px',
+    color: 'white',
+    fontSize: '16px'
   },
   hiddenMessageContainer: {
     marginTop: 15

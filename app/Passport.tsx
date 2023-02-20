@@ -1,16 +1,11 @@
 'use client'
-import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
+import { useEffect, useState,  } from 'react'
 import { styles } from './styles'
+import { useSigner, useAccount } from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY
 const COMMUNITY_ID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
-
-declare global {
-  interface Window {
-    ethereum?: any
-  }
-}
 
 const headers = API_KEY ? ({
   'Content-Type': 'application/json',
@@ -24,39 +19,17 @@ const SIGNING_MESSAGE_URI = 'https://api.scorer.gitcoin.co/registry/signing-mess
 // score needed to see hidden message
 const thresholdNumber = 32
 
-export default function Passport() {
-  const [address, setAddress] = useState<string>('')
-  const [connected, setConnected] = useState<boolean>(false)
+export default function Passport(props) {
   const [score, setScore] = useState<string>('')
   const [noScoreMessage, setNoScoreMessage] = useState<string>('')
+  const { address, isConnected } = useAccount()
+  const { data: signer } = useSigner()
 
   useEffect(() => {
-    checkConnection()
-    async function checkConnection() {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const accounts = await provider.listAccounts()
-        if (accounts && accounts[0]) {
-          setConnected(true)
-          setAddress(accounts[0])
-          checkPassport(accounts[0])
-        }
-      } catch (err) {
-        console.log('not connected...')
-      }
+    if (isConnected) {
+      checkPassport()
     }
-  }, [])
-
-  async function connect() {
-    try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      setAddress(accounts[0])
-      setConnected(true)
-      checkPassport(accounts[0])
-    } catch (err) {
-      console.log('error connecting...')
-    }
-  }
+  }, [isConnected])
 
   async function checkPassport(currentAddress = address) {
     setScore('')
@@ -94,10 +67,9 @@ export default function Passport() {
 
   async function submitPassport() {
     setNoScoreMessage('')
+    if (!signer) return
     try {
       const { message, nonce } = await getSigningMessage()
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
       const signature = await signer.signMessage(message)
       
       const response = await fetch(SUBMIT_PASSPORT_URI, {
@@ -119,49 +91,51 @@ export default function Passport() {
   }
 
   return (
-    <div style={styles.main}>
-      <h1 style={styles.heading}>Passport Scorer 🫶</h1>
-      <p style={styles.intro}>Gitcoin Passport is an identity protocol that proves your trustworthiness without needing to collect personally identifiable information.</p>
-      <p style={styles.configurePassport}>Configure your passport <a style={styles.linkStyle} target="_blank" href="https://passport.gitcoin.co/#/dashboard">here</a></p>
-      <p style={styles.configurePassport}>Once you've added more stamps to your passport, submit your passport again to recalculate your score.</p>
-      <div style={styles.buttonContainer}>
-      {
-        !connected && (
-          <button style={styles.buttonStyle} onClick={connect}>Connect Wallet</button>
-        )
-      }
-      {
-        score && (
-          <div>
-            <h1>Your passport score is {score} 🎉</h1>
-            <div style={styles.hiddenMessageContainer}>
-              {
-                Number(score) >= thresholdNumber && (
-                  <h2>Congratulations, you can view this secret message!</h2>
-                )
-              }
-              {
-                Number(score) < thresholdNumber && (
-                  <h2>Sorry, your score is not high enough to view the secret message.</h2>
-                )
-              }
-            </div>
-          </div>
-        )
-      }
-      {
-        connected && (
+
+        <div style={styles.main}>
+          <h1 style={styles.heading}>Passport Scorer 🫶</h1>
+          <p style={styles.intro}>Gitcoin Passport is an identity protocol that proves your trustworthiness without needing to collect personally identifiable information.</p>
+          <p style={styles.configurePassport}>Configure your passport <a style={styles.linkStyle} target="_blank" href="https://passport.gitcoin.co/#/dashboard">here</a></p>
+          <p style={styles.configurePassport}>Once you've added more stamps to your passport, submit your passport again to recalculate your score.</p>
           <div style={styles.buttonContainer}>
-            <button style={styles.buttonStyle} onClick={submitPassport}>Submit Passport</button>
-            <button style={styles.buttonStyle} onClick={() => checkPassport()}>Check passport score</button>
+          {
+            !isConnected && (
+              <ConnectButton />
+            )
+          }
+          {
+            score && (
+              <div>
+                <h1>Your passport score is {score}</h1>
+                <div style={styles.hiddenMessageContainer}>
+                  {
+                    Number(score) >= thresholdNumber && (
+                      <h2>Congratulations, you can view this secret message!  🎉</h2>
+                    )
+                  }
+                  {
+                    Number(score) < thresholdNumber && (
+                      <h2>Sorry, your score is not high enough to view the secret message.</h2>
+                    )
+                  }
+                </div>
+              </div>
+            )
+          }
+          {
+            isConnected && (
+              <div style={styles.buttonContainer}>
+                <button style={styles.buttonStyle} onClick={submitPassport}>Submit Passport</button>
+                <button style={styles.buttonStyle} onClick={() => checkPassport()}>Check passport score</button>
+              </div>
+            )
+          }
+          {
+            noScoreMessage && (<p style={styles.noScoreMessage}>{noScoreMessage}</p>)
+          }
           </div>
-        )
-      }
-      {
-        noScoreMessage && (<p style={styles.noScoreMessage}>{noScoreMessage}</p>)
-      }
-      </div>
-    </div>
+        </div>
+
   )
 }
 
