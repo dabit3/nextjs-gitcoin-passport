@@ -5,7 +5,7 @@ import { useSigner, useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY
-const COMMUNITY_ID = process.env.NEXT_PUBLIC_GC_COMMUNITY_ID
+const SCORER_ID = process.env.NEXT_PUBLIC_GC_SCORER_ID
 
 const headers = API_KEY ? ({
   'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export default function Passport(props) {
   async function checkPassport(currentAddress = address) {
     setScore('')
     setNoScoreMessage('')
-    const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITY_ID}/${currentAddress}`
+    const GET_PASSPORT_SCORE_URI = `https://api.scorer.gitcoin.co/registry/score/${SCORER_ID}/${currentAddress}`
     try {
       const response = await fetch(GET_PASSPORT_SCORE_URI, {
         headers
@@ -77,7 +77,7 @@ export default function Passport(props) {
         headers,
         body: JSON.stringify({
           address,
-          community: COMMUNITY_ID,
+          scorer: SCORER_ID,
           signature,
           nonce
         })
@@ -139,18 +139,3 @@ export default function Passport(props) {
   )
 }
 
-
-
-// async function getScorer() {
-//   //  api scorer
-//   const COMMUNITY_SCORER_URI = `https://api.scorer.gitcoin.co/registry/score/${COMMUNITY_ID}`
-//   try {
-//     const response = await fetch(COMMUNITY_SCORER_URI, {
-//       headers
-//     })
-//     const data = await response.json()
-//     console.log('data: ', data)
-//   } catch (err) {
-//     console.log('error: ', err)
-//   }
-// }
