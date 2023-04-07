@@ -10,7 +10,7 @@ way of retrieving a wallet's Passport score.
 
 ### Getting started
 
-To get started, you must first create an API Key and community
+To get started, you must first create an API Key and Scorer ID
 using the [Gitcoin Scorer API](https://scorer.gitcoin.co/).
 
 You can look through this codebase to see what a simple integration with Gitcoin
@@ -29,13 +29,13 @@ documentation](https://docs.passport.gitcoin.co/)
     npm install
     ```
 
-2. Configure the environment variables for your Community ID and API key in
+2. Configure the environment variables for your Scorer ID and API key in
    a file named `.env.local`. (see example configuration at
    `.example.env.local`)
 
     ```
     NEXT_PUBLIC_GC_API_KEY=<your-api-key>
-    NEXT_PUBLIC_GC_COMMUNITY_ID=<your-community-id>
+    NEXT_PUBLIC_GC_SCORER_ID=<your-scorer-id>
     ```
 
 3. Run the app

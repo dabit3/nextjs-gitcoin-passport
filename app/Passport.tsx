@@ -17,7 +17,7 @@ const SUBMIT_PASSPORT_URI = 'https://api.scorer.gitcoin.co/registry/submit-passp
 // getting the signing message
 const SIGNING_MESSAGE_URI = 'https://api.scorer.gitcoin.co/registry/signing-message'
 // score needed to see hidden message
-const thresholdNumber = 32
+const thresholdNumber = 20
 
 export default function Passport(props) {
   const [score, setScore] = useState<string>('')
