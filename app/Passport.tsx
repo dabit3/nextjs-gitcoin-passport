@@ -77,7 +77,7 @@ export default function Passport(props) {
         headers,
         body: JSON.stringify({
           address,
-          scorer: SCORER_ID,
+          scorer_id: SCORER_ID,
           signature,
           nonce
         })
